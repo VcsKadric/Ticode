@@ -35,5 +35,5 @@ typedef struct	s_env
   t_map	*map;
 }		t_env;
 
-t_map		*parse_map(char *argv, int fd);
+t_map		*parse_map(char **argv, int fd);
 #endif

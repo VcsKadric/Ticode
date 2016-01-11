@@ -10,7 +10,8 @@ int	main(int argc, char **argv)
       env = (t_env*)malloc(sizeof(t_env));
       if (env == NULL)
 	return (NULL);
-      map = parse_map(argv[1], 0);
+      map = parse_map(argv, 0);
       env->map = map;
+
     }
 }
