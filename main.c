@@ -26,6 +26,7 @@ int	main(int argc, char **argv)
 	return (NULL);
       map = parse_map(argv, 0);
       env->map = map;
+<<<<<<< HEAD
       env->mlx = mlx_init();
       env->mlx_win = mlx_new_window(env->mlx, 1000,  1000, "Kadric");
       draw_pts(env);
@@ -34,5 +35,8 @@ int	main(int argc, char **argv)
       mlx_key_hook(env->mlx_win, key_hook, env);
       mlx_loop(env->mlx);
       return(0);
+=======
+
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
     }
 }

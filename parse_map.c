@@ -65,7 +65,10 @@ int	nb_line_map(char *str)
 	nb_lines++;
     }
   close(fd);
+<<<<<<< HEAD
   printf("nb_line_map = %d\n", nb_lines);
+=======
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
   return (nb_lines);
 }
 
@@ -78,26 +81,46 @@ t_map	*parse_map(char **argv, int fd)
   int		nb_line;
   int	i;
   int	j;
+<<<<<<< HEAD
 
   str = ft_strnew(0);
+=======
+  j = 0;
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
   i = 0;
   nb_line = 0;
   if (!(map = (t_map*)malloc(sizeof(t_map))))
     return (NULL);
+<<<<<<< HEAD
   if (!(map->lines = (t_line**)malloc(sizeof(t_line) * (nb_line_map(argv[1]) + 1))))
     return (NULL);
   if ((fd = open(argv[1], O_RDONLY)) > 0)
     {
       while (i <= nb_line_map(argv[1]))
+=======
+  if (!(map->lines = (t_line**)malloc(sizeof(t_line) * nb_line_map(argv[1], fd) + 1)))
+    return (NULL);
+  printf("retour nb_line_map = %d\n", nb_line_map(argv[1], fd));
+  map->len = nb_line;
+  printf("map->len = %d\n",map->len);
+  if ((fd = open(argv[1], O_RDONLY)) > 0)
+    {
+      while (i <= nb_line_map(argv[1], fd))//((get_next_line(fd, &str)) > 0)
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
 	{
 	  if (!(line = (t_line*)malloc(sizeof(t_line))))
 	    return (NULL);
 	  get_next_line(fd, &str);
+<<<<<<< HEAD
 	  line->len = line_numbers(str, nb_line, &tab_point);
+=======
+	  line->len = line_numbers(str, nb_line, &tab_point);//nombre de donnees dans str
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
 	  line->pts = tab_point;
 	  map->lines[nb_line] = line;
 	  nb_line++;
 	  i++;
+<<<<<<< HEAD
 	  printf("lines->len = %d\n",line->len);
 	}
       close(fd);
@@ -118,6 +141,28 @@ t_map	*parse_map(char **argv, int fd)
 	  i++;
 	  }
       */
+=======
+	}
+      map->len = nb_line;
+      printf("nb_line = %d\n", nb_line);
+      printf(" line->len = %d\n",line->len);
+      printf("map->len = %d\n",map->len);
+      i = 0;
+      while(map->lines[i])
+	{
+	  j = 0;
+	  printf("---------------------------\n---------------------------\n");
+	  while(map->lines[i]->pts[j])
+	    {
+	      printf("tab_ptz = %f\n", map->lines[i]->pts[j]->z);
+	      printf("tab_pty = %f\n",map->lines[i]->pts[j]->y);
+	      printf("tab_ptx = %f\n", map->lines[i]->pts[j]->x);
+	      printf("---------------------------\n");
+	      j++;
+	    }
+	  i++;
+	}
+>>>>>>> 9133a6be655e862f6f93741b92a284f7bc4fb7a5
     }
   return(map);
 }
