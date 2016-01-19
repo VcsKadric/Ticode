@@ -33,7 +33,7 @@ int	line_numbers(char *str, int nb_line, t_point ***tab_point)
   nb = 0;
   while (tab_str[nb])
     nb++;
-  if(!((*tab_point) = (t_point**)malloc(sizeof(t_point) * (nb + 1))))
+  if(!((*tab_point) = (t_point**)malloc(sizeof(t_point) * nb)))
     return (NULL);
   nb = 0;
   while (tab_str[nb])
@@ -46,7 +46,6 @@ int	line_numbers(char *str, int nb_line, t_point ***tab_point)
       (*tab_point)[nb] = point;
       nb++;
     }
-  printf("nb = %d\n", nb);
   return (nb);
 }
 
@@ -65,7 +64,6 @@ int	nb_line_map(char *str)
 	nb_lines++;
     }
   close(fd);
-  printf("nb_line_map = %d\n", nb_lines);
   return (nb_lines);
 }
 
@@ -84,25 +82,22 @@ t_map	*parse_map(char **argv, int fd)
   nb_line = 0;
   if (!(map = (t_map*)malloc(sizeof(t_map))))
     return (NULL);
-  if (!(map->lines = (t_line**)malloc(sizeof(t_line) * (nb_line_map(argv[1]) + 1))))
+  if (!(map->lines = (t_line**)malloc(sizeof(t_line) * (nb_line_map(argv[1])))))
     return (NULL);
   if ((fd = open(argv[1], O_RDONLY)) > 0)
     {
-      while (i <= nb_line_map(argv[1]))
+      while (get_next_line(fd, &str))
 	{
 	  if (!(line = (t_line*)malloc(sizeof(t_line))))
 	    return (NULL);
-	  get_next_line(fd, &str);
 	  line->len = line_numbers(str, nb_line, &tab_point);
 	  line->pts = tab_point;
 	  map->lines[nb_line] = line;
 	  nb_line++;
-	  i++;
-	  printf("lines->len = %d\n",line->len);
 	}
       close(fd);
       map->len = nb_line;
-      /*     i = 0;
+      /*           i = 0;
       while(map->lines[i])
 	{
 	  j = 0;
