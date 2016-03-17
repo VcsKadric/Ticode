@@ -1,38 +1,54 @@
-# include "fdf.h"
+#include "fdf.h"
 
-int		expose_hook(t_env *env)
+int		expose_hook(t_env *e)
 {
-
-  return(0);
+	draw_reload(e);
+	return (0);
 }
 
-int		key_hook(int keycode, t_env *env)
+void	display_controls(void)
 {
-	printf("key = %d\n", keycode);
-	if (keycode == 53)
-		exit(0);
-	return(0); 
+	ft_putstr("\
+____________________________\n\
+CONTROLS:\n\
+Translation:\n\
+	Y: Key: UP, DOWN\n\
+	X: Key: LEFT, RIGHT\n\
+\n\
+Rotation:\n\
+	X: Keypad: 1, 4\n\
+	Y: Keypad: 2, 5\n\
+	Z: Keypad: 3, 6\n\
+\n\
+Zoom:\n\
+	IN: Keypad: +\n\
+	OUT: Keypad: -\n\
+____________________________\n\
+");
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
-  t_env		*env;
-  t_map		*map;
+	t_env	*e;
+	t_map	*map;
 
-  if (argc == 2)
-    {
-      env = (t_env*)malloc(sizeof(t_env));
-      if (env == NULL)
-	return (NULL);
-      map = parse_map(argv, 0);
-      env->map = map;
-      env->mlx = mlx_init();
-      env->mlx_win = mlx_new_window(env->mlx, 1000,  1000, "Kadric");
-      draw_pts(env);
-      //      draw_line(env);
-      mlx_expose_hook(env->mlx_win, expose_hook, env);
-      mlx_key_hook(env->mlx_win, key_hook, env);
-      mlx_loop(env->mlx);
-      return(0);
-    }
+	if (argc == 2)
+	{
+		if (!(e = (t_env*)malloc(sizeof(t_env))))
+			fdf_malloc_error();
+		map = ft_parse_map(argv, 0);
+		if (map->len == 0 || map->lines[0]->len == 0)
+			fdf_map_error();
+		e->map = map;
+		get_center(e);
+		display_controls();
+		draw_windows("42 FDF", WINDOW_SIZE_W, WINDOW_SIZE_H, e);
+		adapt_map(e);
+		mlx_expose_hook(e->win, expose_hook, e);
+		mlx_hook(e->win, 2, 3, key_hook, e);
+		mlx_loop(e->mlx);
+	}
+	else
+		fdf_arg_error();
+	return (0);
 }
